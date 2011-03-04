@@ -16,8 +16,16 @@ module Enviro
         @_configuration_path_env
       end
 
+      def configuration_path_str(path=nil)
+        @_configuration_path_str = path
+      end
+
       def configuration_path
-        @_configuration_path ||= (ENV[self.configuration_path_env]||'enviro.yml')
+        if @_configuration_path_str
+          @_configuration_path ||= @_configuration_path_str
+        else
+          @_configuration_path ||= (ENV[self.configuration_path_env]||'enviro.yml')
+        end
       end
 
       def configuration

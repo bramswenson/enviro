@@ -49,6 +49,7 @@ describe Enviro::Configuration do
     before(:each) do
       Object.send(:remove_const, :TestEnviroConfiguration) if defined?(TestEnviroConfiguration)
       ENV['CUSTOM_PATH'] = '/tmp/enviro_custom.yml'
+
       class TestEnviroConfiguration
         include Enviro::Environment
         include Enviro::Configuration
@@ -71,5 +72,48 @@ describe Enviro::Configuration do
       TestEnviroConfiguration.configuration_path_env.should == 'CUSTOM_PATH'
     end
 
+  end
+
+  context "with path specified in enviro configuration itself" do
+    before(:each) do
+      Object.send(:remove_const, :TestEnviroConfiguration) if defined?(TestEnviroConfiguration)
+      ENV['CUSTOM_PATH'] = '/tmp/enviro_custom.yml'
+      ENV['ENVY_ENV'] = nil
+
+      $custom_str_path = '/tmp/enviro_custom_str.yml'
+
+      config = {
+        :development => {
+        },
+        :test => {
+        },
+        :production => {
+        },
+      }
+      File.open($custom_str_path, 'w') do |f|
+        f.write(YAML.dump(config))
+      end
+
+      class TestEnviroConfiguration
+        include Enviro::Environment
+        include Enviro::Configuration
+        configuration_path_str $custom_str_path
+      end
+    end
+
+    it "should have configuration available as a struct like object" do
+      TestEnviroConfiguration.configuration.should respond_to(:methods)
+    end
+
+    it "should have configuration for current environment" do
+      TestEnviroConfiguration.configuration.environment.should be(:development)
+    end
+
+    it "should raise when configuration for current environment is not found" do
+      ENV['ENVY_ENV'] = 'who_the_heck_knows'
+      expect {
+        TestEnviroConfiguration.configuration.environment
+      }.should raise_error(Enviro::Configuration::UnknownEnvironment)
+    end
   end
 end
