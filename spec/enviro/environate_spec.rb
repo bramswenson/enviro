@@ -12,4 +12,15 @@ describe Enviro::Environate do
     end
   end
 
+  context "the extended module" do
+
+    context "should respond to" do
+      %w( environment configuration logger).each do |meth|
+        it "#{meth}" do
+          EnviroModule.should respond_to(meth.to_sym)
+        end
+      end
+    end
+  end
+
 end

@@ -5,3 +5,6 @@ class EnviroMe
   include Enviro::Environate
 end
 
+module EnviroModule
+  include Enviro::Environate
+end
