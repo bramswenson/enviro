@@ -72,6 +72,10 @@ describe Enviro::Configuration do
       TestEnviroConfiguration.configuration_path_env.should == 'CUSTOM_PATH'
     end
 
+    it "should look in the right place for its configuration file" do
+      TestEnviroConfiguration.configuration_path.should == ENV['CUSTOM_PATH']
+    end
+
   end
 
   context "with path specified in enviro configuration itself" do
