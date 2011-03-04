@@ -24,7 +24,7 @@ module Enviro
         if @_configuration_path_str
           @_configuration_path ||= @_configuration_path_str
         else
-          @_configuration_path ||= (ENV[self.configuration_path_env]||'enviro.yml')
+          @_configuration_path ||= (ENV[configuration_path_env]||'enviro.yml')
         end
       end
 
