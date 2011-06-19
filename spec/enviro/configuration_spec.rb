@@ -4,7 +4,7 @@ describe Enviro::Configuration do
   context "with standard environment variable" do
     before(:each) do
       Object.send(:remove_const, :TestEnviroConfiguration) if defined?(TestEnviroConfiguration)
-      ENV['ENVY_CONF_PATH'] = '/tmp/enviro.yml'
+      ENV['ENVIRO_CONF_PATH'] = '/tmp/enviro.yml'
       class TestEnviroConfiguration
         include Enviro::Environment
         include Enviro::Configuration
@@ -17,7 +17,7 @@ describe Enviro::Configuration do
         :production => {
         },
       }
-      File.open(ENV['ENVY_CONF_PATH'], 'w') do |f|
+      File.open(ENV['ENVIRO_CONF_PATH'], 'w') do |f|
         f.write(YAML.dump(config))
       end
     end
@@ -31,14 +31,14 @@ describe Enviro::Configuration do
     end
 
     it "should raise when configuration file is not found" do
-      ENV['ENVY_CONF_PATH'] = 'who_the_heck_knows'
+      ENV['ENVIRO_CONF_PATH'] = 'who_the_heck_knows'
       expect {
         TestEnviroConfiguration.configuration
       }.should raise_error(Enviro::Configuration::FileNotFound)
     end
 
     it "should raise when configuration for current environment is not found" do
-      ENV['ENVY_ENV'] = 'who_the_heck_knows'
+      ENV['ENVIRO_ENV'] = 'who_the_heck_knows'
       expect {
         TestEnviroConfiguration.configuration.environment
       }.should raise_error(Enviro::Configuration::UnknownEnvironment)
@@ -82,7 +82,7 @@ describe Enviro::Configuration do
     before(:each) do
       Object.send(:remove_const, :TestEnviroConfiguration) if defined?(TestEnviroConfiguration)
       ENV['CUSTOM_PATH'] = '/tmp/enviro_custom.yml'
-      ENV['ENVY_ENV'] = nil
+      ENV['ENVIRO_ENV'] = nil
 
       $custom_str_path = '/tmp/enviro_custom_str.yml'
 
@@ -114,7 +114,7 @@ describe Enviro::Configuration do
     end
 
     it "should raise when configuration for current environment is not found" do
-      ENV['ENVY_ENV'] = 'who_the_heck_knows'
+      ENV['ENVIRO_ENV'] = 'who_the_heck_knows'
       expect {
         TestEnviroConfiguration.configuration.environment
       }.should raise_error(Enviro::Configuration::UnknownEnvironment)

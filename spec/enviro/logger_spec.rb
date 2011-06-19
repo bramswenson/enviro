@@ -8,21 +8,21 @@ describe Enviro::Logger do
         include Enviro::Environment
         include Enviro::Logger
       end
-      ENV['ENVY_LOG_DIR'] = nil
-      ENV['ENVY_CONF_PATH'] = nil
-      ENV['ENVY_ENV'] = nil
+      ENV['ENVIRO_LOG_DIR'] = nil
+      ENV['ENVIRO_CONF_PATH'] = nil
+      ENV['ENVIRO_ENV'] = nil
     end
 
     it "should have logger like object available" do
       TestEnviroLogger.logger.should respond_to(:debug)
     end
 
-    it "should log to STDOUT if ENVY_LOG_DIR is nil" do
+    it "should log to STDOUT if ENVIRO_LOG_DIR is nil" do
       TestEnviroLogger.logger.instance_variable_get(:@logdev).dev.should be(STDOUT)
     end
 
-    it "should log to /tmp/development.log if ENVY_LOG_DIR is /tmp and ENVY_ENV is development" do
-      ENV['ENVY_LOG_DIR'] = '/tmp'
+    it "should log to /tmp/development.log if ENVIRO_LOG_DIR is /tmp and ENVIRO_ENV is development" do
+      ENV['ENVIRO_LOG_DIR'] = '/tmp'
       TestEnviroLogger.logger.instance_variable_get(:@logdev).dev.path.should == '/tmp/development.log'
     end
 
@@ -33,7 +33,7 @@ describe Enviro::Logger do
     end
 
     it "should raise when log file is not writable" do
-      ENV['ENVY_LOG_DIR'] = '/tmp/this_dir_is_not_here'
+      ENV['ENVIRO_LOG_DIR'] = '/tmp/this_dir_is_not_here'
       expect {
         TestEnviroLogger.logger
       }.should raise_error(Enviro::Logger::DirectoryNotFound)
@@ -53,10 +53,10 @@ describe Enviro::Logger do
       end
 
       it "should inherit the logger from Rails should it be loaded" do
-        # if we set the log dir to something that doesn't exist 
+        # if we set the log dir to something that doesn't exist
         # we can more sure that the Rails.logger is getting used
         # since otherwise we would raise an error due to the missing dir
-        ENV['ENVY_LOG_DIR'] = '/tmp/this_should_not_exits'
+        ENV['ENVIRO_LOG_DIR'] = '/tmp/this_should_not_exits'
         TestEnviroLogger.logger.instance_variable_get(:@logdev).dev.should == Rails.logger.instance_variable_get(:@logdev).dev
       end
     end
@@ -70,9 +70,9 @@ describe Enviro::Logger do
         include Enviro::Logger
         logger_dir_env :custom_log
       end
-      ENV['ENVY_LOG_DIR'] = nil
-      ENV['ENVY_CONF_PATH'] = nil
-      ENV['ENVY_ENV'] = nil
+      ENV['ENVIRO_LOG_DIR'] = nil
+      ENV['ENVIRO_CONF_PATH'] = nil
+      ENV['ENVIRO_ENV'] = nil
     end
 
     it "should upcase the logger_dir_env attribute" do
