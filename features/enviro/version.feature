@@ -5,4 +5,4 @@ Feature: Enviro should be versioned
   So I can respond as needed
 
   Scenario: Enviro::VERSION
-    Then "Enviro::VERSION" should be "0.0.1"
+    Then "Enviro::VERSION" should be "0.0.5"
