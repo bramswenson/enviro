@@ -23,9 +23,9 @@ module Enviro
 
         def _setup_environment
           if defined?(Rails)
-            Rails.env
+            Rails.env.to_sym
           else
-            ENV['ENVY_ENV'].nil? ? :development : ENV['ENVY_ENV'].to_sym
+            ENV['ENVIRO_ENV'].nil? ? :development : ENV['ENVIRO_ENV'].to_sym
           end
         end
 

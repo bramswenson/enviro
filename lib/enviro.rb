@@ -1,4 +1,6 @@
 require 'forwardable'
+require 'ostruct'
+require 'core_ext/hash'
 
 module Enviro
   autoload :Environment,   'enviro/environment'

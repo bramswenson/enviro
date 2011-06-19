@@ -16,7 +16,7 @@ module Enviro
     module ClassMethods
 
       def logger_dir_env(value=nil)
-        @_logger_dir_env ||= 'ENVY_LOG_DIR'
+        @_logger_dir_env ||= 'ENVIRO_LOG_DIR'
         @_logger_dir_env = value.to_s.upcase unless value.nil?
         @_logger_dir_env
       end

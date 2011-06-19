@@ -11,7 +11,7 @@ module Enviro
     module ClassMethods
 
       def configuration_path_env(value=nil)
-        @_configuration_path_env ||= 'ENVY_CONF_PATH'
+        @_configuration_path_env ||= 'ENVIRO_CONF_PATH'
         @_configuration_path_env = value.to_s.upcase unless value.nil?
         @_configuration_path_env
       end
@@ -38,12 +38,12 @@ module Enviro
           raise FileNotFound.new(self.configuration_path) unless
             File.exists?(self.configuration_path)
 
-          @raw_configuration = YAML.load_file(self.configuration_path)
+          @raw_configuration = YAML.load_file(self.configuration_path).deep_symbolize_keys
 
           raise UnknownEnvironment.new(self.environment) unless
             @raw_configuration.key?(self.environment)
 
-          OpenStruct.new(@raw_configuration[self.environment].merge(:environment => self.environment))
+          ::OpenStruct.new(@raw_configuration[self.environment].merge(:environment => self.environment))
         end
 
     end
